@@ -85,7 +85,6 @@ const formatMovementDate = function (date, locale) {
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
   const daysPassed = calcDaysPassed(new Date(), date);
-  console.log(daysPassed);
 
   if (daysPassed === 0) return 'Today';
   if (daysPassed === 1) return 'Yesterday';
@@ -186,6 +185,11 @@ const updateUI = function (acc) {
 // Event handlers
 let currentAccount;
 
+// FAKE ALWAYS LOGED IN
+currentAccount = account1;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
+
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -274,11 +278,13 @@ btnLoan.addEventListener('click', function (e) {
     loanAmount > 0 &&
     currentAccount.movements.some(mov => mov >= loanAmount * 0.1)
   ) {
-    currentAccount.movements.push(loanAmount);
-    currentAccount.movementsDates.push(new Date());
+    setTimeout(() => {
+      currentAccount.movements.push(loanAmount);
+      currentAccount.movementsDates.push(new Date());
 
-    // Update UI
-    updateUI(currentAccount);
+      // Update UI
+      updateUI(currentAccount);
+    }, 2500);
 
     // Clear input field
     inputLoanAmount.value = '';
@@ -292,11 +298,3 @@ btnSort.addEventListener('click', function (e) {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
-
-const now = new Date();
-const date = new Intl.DateTimeFormat('en').format(now);
-
-console.log(date);
-
-const local = navigator.language;
-console.log(local);
