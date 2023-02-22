@@ -21,9 +21,9 @@ const account1 = {
     '2020-01-28T09:15:04.904Z',
     '2020-04-01T10:17:24.185Z',
     '2020-05-08T14:11:59.604Z',
-    '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+    new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000),
+    new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -80,6 +80,23 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+const formatMovementDate = function (date) {
+  const calcPassedDays = (date1, date2) =>
+    Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+  const now = new Date();
+  const fullDate = new Date(date);
+  const passedDays = calcPassedDays(now, fullDate);
+
+  if (passedDays === 0) return 'Today';
+  if (passedDays === 1) return 'Yesterday';
+  if (passedDays <= 7) return `${passedDays} days`;
+
+  const day = `${fullDate.getDate()}`.padStart(2, 0);
+  const month = `${fullDate.getMonth() + 1}`.padStart(2, 0);
+  const year = fullDate.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -90,16 +107,13 @@ const displayMovements = function (acc, sort = false) {
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
-    const date = new Date(acc.movementsDates[i]);
-    const day = `${date.getDate()}`.padStart(2, 0);
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const year = date.getFullYear();
+    const date = formatMovementDate(acc.movementsDates[i]);
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__date">${day}/${month}/${year}</div>
+          <div class="movements__date">${date}</div>
         <div class="movements__value">${mov.toFixed(2)}$</div>
       </div>
     `;
@@ -210,6 +224,8 @@ btnTransfer.addEventListener('click', function (e) {
   ) {
     currentAccount.movements.push(-amount);
     receiverAccount.movements.push(amount);
+    currentAccount.movementsDates.push(new Date());
+    receiverAccount.movementsDates.push(new Date());
 
     // Clear input fields
     inputTransferAmount.value = inputTransferTo.value = '';
@@ -247,6 +263,7 @@ btnLoan.addEventListener('click', function (e) {
     currentAccount.movements.some(mov => mov >= loanAmount * 0.1)
   ) {
     currentAccount.movements.push(loanAmount);
+    currentAccount.movementsDates.push(new Date());
 
     // Update UI
     updateUI(currentAccount);
