@@ -72,3 +72,16 @@ btnScrollTo.addEventListener('click', () => {
   // Scroll in a modern way, not support it on all browser
   // section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+// Welcome alert
+const welcomeAlert = () => {
+  alert('Welcome to our website :D');
+};
+
+const h1 = document.querySelector('h1');
+// Add welcome event
+h1.addEventListener('mouseenter', welcomeAlert);
+// Remove welcome event
+setTimeout(() => {
+  h1.removeEventListener('mouseenter', welcomeAlert);
+}, 100);
