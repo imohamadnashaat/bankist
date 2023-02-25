@@ -32,8 +32,8 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-///////////////////////////////
-// Add cookie message
+///////////////////////////////////////
+// Cookie message
 const message = document.createElement('div');
 message.classList.add('cookie-message');
 
@@ -55,7 +55,8 @@ message.style.width = '100%';
 message.style.height =
   Number.parseInt(getComputedStyle(message).height) + 22 + 'px';
 
-// Add scroll on `Learn more` button
+///////////////////////////////////////
+// Scroll button
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
@@ -73,6 +74,31 @@ btnScrollTo.addEventListener('click', () => {
   // section1.scrollIntoView({ behavior: 'smooth' });
 });
 
+///////////////////////////////////////
+// Page navigation
+
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const id = this.getAttribute('href');
+//     console.log(id);
+//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// 1. Add event listener to common parent element
+// 2. Determine what element originated the event
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  // Matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+///////////////////////////////////////
 // Welcome alert
 const welcomeAlert = () => {
   alert('Welcome to our website :D');
@@ -85,6 +111,10 @@ h1.addEventListener('mouseenter', welcomeAlert);
 setTimeout(() => {
   h1.removeEventListener('mouseenter', welcomeAlert);
 }, 100);
+
+///////////////////////////////////////
+///////////////////////////////////////
+///////////////////////////////////////
 
 // Event Propagation in Practice
 /*
