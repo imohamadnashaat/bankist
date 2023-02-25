@@ -54,3 +54,21 @@ message.style.backgroundColor = '#37383d';
 message.style.width = '100%';
 message.style.height =
   Number.parseInt(getComputedStyle(message).height) + 22 + 'px';
+
+// Add scroll on `Learn more` button
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', () => {
+  const s1coords = section1.getBoundingClientRect();
+
+  // Scroll
+  window.scrollTo({
+    top: s1coords.top + window.scrollY,
+    left: s1coords.left + window.scrollX,
+    behavior: 'smooth',
+  });
+
+  // Scroll in a modern way, not support it on all browser
+  // section1.scrollIntoView({ behavior: 'smooth' });
+});
