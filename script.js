@@ -57,6 +57,7 @@ message.style.height =
 
 ///////////////////////////////////////
 // Scroll button
+
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 
@@ -100,6 +101,7 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 ///////////////////////////////////////
 // Welcome alert
+
 const welcomeAlert = () => {
   alert('Welcome to our website :D');
 };
@@ -111,6 +113,44 @@ h1.addEventListener('mouseenter', welcomeAlert);
 setTimeout(() => {
   h1.removeEventListener('mouseenter', welcomeAlert);
 }, 100);
+
+///////////////////////////////////////
+// Tabbed component
+
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab ');
+const contents = document.querySelectorAll('.operations__content');
+
+tabContainer.addEventListener('click', function (e) {
+  const btnTab = e.target.closest('.operations__tab');
+
+  // Guard clause
+  if (!btnTab) return;
+
+  // const btnNum = btnTab.getAttribute('data-tab');
+  const btnNum = btnTab.dataset.tab;
+
+  // Remove active from current tab
+  tabs.forEach(tab => {
+    if (tab.classList.contains('operations__tab--active')) {
+      tab.classList.remove('operations__tab--active');
+    }
+  });
+
+  // Add active tab
+  if (btnTab.classList.contains('operations__tab')) {
+    btnTab.classList.add('operations__tab--active');
+  }
+
+  // Remvoe active content
+  contents.forEach(content => {
+    content.classList.remove('operations__content--active');
+  });
+
+  document
+    .querySelector(`.operations__content--${btnNum}`)
+    .classList.add('operations__content--active');
+});
 
 ///////////////////////////////////////
 ///////////////////////////////////////
