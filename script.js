@@ -143,3 +143,31 @@ document.querySelector('.nav').addEventListener('click', function (e) {
   // console.log('NAV', e.target, e.currentTarget);
 });
 */
+
+// DOM traversing
+/*
+const h1El = document.querySelector('h1');
+
+const highlight = h1El.querySelectorAll('.highlight');
+
+// console.log(h1El.childNodes);
+// console.log(h1El.children);
+
+h1El.firstElementChild.style.color = 'white';
+h1El.lastElementChild.style.color = 'gray';
+
+// console.log(h1El.parentNode);
+// console.log(h1El.parentElement);
+
+h1El.closest('.header').style.background = 'var(--color-tertiary)';
+h1El.closest('h1').style.background = 'white';
+
+console.log(h1El.previousElementSibling);
+console.log(h1El.nextElementSibling);
+
+console.log(h1El.parentElement.children);
+
+[...h1El.parentElement.children].forEach(
+  el => (el.style.transform = 'scale(0.8)')
+);
+*/
