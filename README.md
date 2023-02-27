@@ -20,7 +20,9 @@ Bankist is a fictional online bank. It is a project introduced by <a href="https
 - 🔥 Sort movements
 - 💥 Internationalize date & currency
 
-<img src="https://github.com/imohamadnashaat/bankist/blob/main/img/desktop-view.jpg" width="60%"/>
+<img src="https://github.com/imohamadnashaat/bankist/blob/main/img/project-preview-1.png" width="50%"/>
+<img src="https://github.com/imohamadnashaat/bankist/blob/main/img/project-preview-2.png" width="50%"/>
+<img src="https://github.com/imohamadnashaat/bankist/blob/main/img/project-preview-3.png" width="50%"/>
 
 ## Login Details
 
