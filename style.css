@@ -1,5 +1,3 @@
-/* The page is NOT responsive. You can implement responsiveness yourself if you wanna have some fun 😃 */
-
 :root {
   --color-primary: #5ec576;
   --color-secondary: #ffcb03;
@@ -12,6 +10,9 @@
   --color-tertiary-opacity: #ff58602d;
   --gradient-primary: linear-gradient(to top left, #39b385, #9be15d);
   --gradient-secondary: linear-gradient(to top left, #ffb003, #ffcb03);
+  --gradient-cancellation: linear-gradient(to top left, #e52a5a, #ff585f);
+  --white: #ffffff;
+  --black: #000000;
 }
 
 * {
@@ -73,9 +74,10 @@ body {
   font-weight: 500;
   border: none;
   padding: 1.25rem 4.5rem;
-  border-radius: 10rem;
+  border-radius: 2rem;
   cursor: pointer;
   transition: all 0.3s;
+  color: var(--black);
 }
 
 .btn:hover {
@@ -94,8 +96,11 @@ body {
   padding-bottom: 2px;
   cursor: pointer;
   transition: all 0.3s;
+  width: max-content;
 }
-
+.btn---close-cookie {
+  color: var(--black);
+}
 p {
   color: #666;
 }
@@ -122,27 +127,28 @@ img {
   width: 100%;
   padding: 0 6rem;
   z-index: 100;
+  flex-direction: row;
 }
 
 /* nav and stickly class at the same time */
 .nav.sticky {
   position: fixed;
   background-color: rgba(255, 255, 255, 0.95);
+  margin-top: 0;
 }
 
 .nav__logo {
   height: 4.5rem;
   transition: all 0.3s;
 }
-
+.hamburger {
+  display: none;
+}
 .nav__links {
   display: flex;
   align-items: center;
   list-style: none;
-}
-
-.nav__item {
-  margin-left: 4rem;
+  gap: 2rem;
 }
 
 .nav__link:link,
@@ -158,13 +164,43 @@ img {
 .nav__link--btn:link,
 .nav__link--btn:visited {
   padding: 0.8rem 2.5rem;
-  border-radius: 3rem;
+  border-radius: 2rem;
   background-color: var(--color-primary);
   color: #222;
 }
 
 .nav__link--btn:hover,
 .nav__link--btn:active {
+  color: inherit;
+  background-color: var(--color-primary-darker);
+  color: var(--black);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.form-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
+}
+.next--step {
+  padding: 1rem;
+  border-radius: 2rem;
+  background-color: var(--color-primary);
+  color: var(--black);
+  font-size: 1.7rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.3s;
+  width: 30%;
+  text-align: center;
+}
+.next--step:hover {
   color: inherit;
   background-color: var(--color-primary-darker);
   color: #333;
@@ -180,22 +216,22 @@ img {
 }
 
 .header__title {
-  flex: 1;
-
   max-width: 115rem;
   display: grid;
-  grid-template-columns: 3fr 2fr;
-  row-gap: 3rem;
-  align-content: center;
-  justify-content: center;
-
-  align-items: start;
-  justify-items: start;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 10%;
+  align-items: center;
+  gap: 1.5rem;
+}
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 h1 {
   font-size: 5.5rem;
-  line-height: 1.35;
+  line-height: 1.8;
 }
 
 h4 {
@@ -205,13 +241,11 @@ h4 {
 
 .header__img {
   width: 100%;
-  grid-column: 2 / 3;
-  grid-row: 1 / span 4;
-  transform: translateY(-6rem);
 }
 
 .highlight {
   position: relative;
+  margin-left: 10px;
 }
 
 .highlight::after {
@@ -231,9 +265,15 @@ h4 {
 /* FEATURES */
 .features {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 4rem;
   margin: 0 12rem;
+}
+.feature-one,
+.feature-two,
+.feature-three {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .features__img {
@@ -274,7 +314,7 @@ h4 {
   max-width: 100rem;
   margin: 12rem auto 0 auto;
 
-  background-color: #fff;
+  background-color: var(--white);
 }
 
 .operations__tab-container {
@@ -285,6 +325,7 @@ h4 {
 .operations__tab {
   margin-right: 2.5rem;
   transform: translateY(-50%);
+  color: var(--black);
 }
 
 .operations__tab span {
@@ -316,8 +357,6 @@ h4 {
 
 .operations__content {
   display: none;
-
-  /* JUST PRESENTATIONAL */
   font-size: 1.7rem;
   padding: 2.5rem 7rem 6.5rem 7rem;
 }
@@ -375,11 +414,9 @@ h4 {
 /* SLIDER */
 .slider {
   max-width: 100rem;
-  height: 50rem;
+  height: 60rem;
   margin: 0 auto;
   position: relative;
-
-  /* IN THE END */
   overflow: hidden;
 }
 
@@ -388,17 +425,13 @@ h4 {
   top: 0;
   width: 100%;
   height: 50rem;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* THIS creates the animation! */
   transition: transform 1s;
 }
 
 .slide > img {
-  /* Only for images that have different size than slide */
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -412,7 +445,7 @@ h4 {
   border: none;
   background: rgba(255, 255, 255, 0.7);
   font-family: inherit;
-  color: #333;
+  color: var(--black);
   border-radius: 50%;
   height: 5.5rem;
   width: 5.5rem;
@@ -448,9 +481,6 @@ h4 {
   margin-right: 1.75rem;
   cursor: pointer;
   transition: all 0.5s;
-
-  /* Only necessary when overlying images */
-  /* box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.7); */
 }
 
 .dots__dot:last-child {
@@ -458,7 +488,6 @@ h4 {
 }
 
 .dots__dot--active {
-  /* background-color: #fff; */
   background-color: #888;
   opacity: 1;
 }
@@ -533,7 +562,7 @@ h4 {
 }
 
 .section--sign-up .section__header {
-  color: #fff;
+  color: var(--white);
   text-align: center;
 }
 
@@ -550,17 +579,20 @@ h4 {
 .footer {
   padding: 10rem 3rem;
   background-color: #37383d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .footer__nav {
   list-style: none;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
   margin-bottom: 5rem;
-}
-
-.footer__item {
-  margin-right: 4rem;
+  line-height: 5rem;
+  gap: 2rem;
 }
 
 .footer__link {
@@ -592,7 +624,8 @@ h4 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 60rem;
+  min-width: 40rem;
+  display: block;
   background-color: #f3f3f3;
   padding: 5rem 6rem;
   box-shadow: 0 4rem 6rem rgba(0, 0, 0, 0.3);
@@ -648,8 +681,8 @@ h4 {
   font-family: inherit;
   color: inherit;
   position: absolute;
-  top: 0.5rem;
-  right: 2rem;
+  top: 0.3rem;
+  right: 1rem;
   font-size: 4rem;
   cursor: pointer;
   border: none;
@@ -663,12 +696,16 @@ h4 {
 
 /* COOKIE MESSAGE */
 .cookie-message {
+  position: fixed;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   width: 100%;
-  background-color: white;
+  background-color: var(--white);
   color: #bbb;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 400;
+  padding: 1rem;
+  z-index: 999;
 }

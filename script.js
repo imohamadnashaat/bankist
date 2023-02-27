@@ -1,20 +1,10 @@
 'use strict';
-
-const header = document.querySelector('.header');
-const nav = document.querySelector('.nav');
-const h1 = document.querySelector('h1');
+//Modal window
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
-const tabs = document.querySelectorAll('.operations__tab');
-const tabContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 
-///////////////////////////////////////
-// Modal window
 const openModal = function (e) {
   e.preventDefault();
   modal.classList.remove('hidden');
@@ -26,9 +16,7 @@ const closeModal = function () {
   overlay.classList.add('hidden');
 };
 
-btnsOpenModal.forEach(btn => {
-  btn.addEventListener('click', openModal);
-});
+btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
 
 btnCloseModal.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
@@ -39,203 +27,148 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-///////////////////////////////////////
-// Cookie message
-const message = document.createElement('div');
+//Cookies Message
+const message = document.createElement('section');
+const header = document.querySelector('.header');
+
 message.classList.add('cookie-message');
-
 message.innerHTML =
-  'We use cookied for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
-
-// Insert cookie message to DOM
+  'We use cookies for improved functionality and analytics. <button class="btn btn---close-cookie">Got it! </button>';
 header.append(message);
-
-// Delete element on click
 document
-  .querySelector('.btn--close-cookie')
-  .addEventListener('click', () => message.remove());
-
-// Style cookie message
-message.style.backgroundColor = '#37383d';
-message.style.width = '100%';
-message.style.height =
-  Number.parseInt(getComputedStyle(message).height) + 22 + 'px';
-
-///////////////////////////////////////
-// Scroll button
-btnScrollTo.addEventListener('click', () => {
-  const s1coords = section1.getBoundingClientRect();
-
-  // Scroll
-  window.scrollTo({
-    top: s1coords.top + window.scrollY,
-    left: s1coords.left + window.scrollX,
-    behavior: 'smooth',
+  .querySelector('.btn---close-cookie')
+  .addEventListener('click', function () {
+    message.parentElement.removeChild(message);
   });
-
-  // Scroll in a modern way, not support it on all browser
-  // section1.scrollIntoView({ behavior: 'smooth' });
-});
-
-///////////////////////////////////////
-// Page navigation
-// 1. Add event listener to common parent element
-// 2. Determine what element originated the event
+message.style.backgroundColor = '#37383d';
+message.style.width = '120%';
+//Smooth Scroll Event Delegation
 document.querySelector('.nav__links').addEventListener('click', function (e) {
   e.preventDefault();
-
-  // Matching strategy
-  if (e.target.classList.contains('nav__link')) {
+  if (
+    e.target.classList.contains('nav__link') &&
+    !e.target.classList.contains('btn--show-modal')
+  ) {
     const id = e.target.getAttribute('href');
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
 });
 
-///////////////////////////////////////
-// Welcome alert
-/*
-const welcomeAlert = () => {
-  alert('Welcome to our website :D');
-};
-// Add welcome event
-h1.addEventListener('mouseenter', welcomeAlert);
-// Remove welcome event
-setTimeout(() => {
-  h1.removeEventListener('mouseenter', welcomeAlert);
-}, 100);
-*/
+//Tabbed components - Operations Section
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
-///////////////////////////////////////
-// Tabbed component
-tabContainer.addEventListener('click', function (e) {
-  const btnTab = e.target.closest('.operations__tab');
-
-  // Guard clause
-  if (!btnTab) return;
-
-  // const btnNum = btnTab.getAttribute('data-tab');
-  const btnNum = btnTab.dataset.tab;
-
-  // Remove active from current tab
-  tabs.forEach(tab => {
-    if (tab.classList.contains('operations__tab--active')) {
-      tab.classList.remove('operations__tab--active');
-    }
-  });
-
-  // Add active tab
-  if (btnTab.classList.contains('operations__tab')) {
-    btnTab.classList.add('operations__tab--active');
-  }
-
-  // Remvoe active content
-  tabsContent.forEach(content => {
-    content.classList.remove('operations__content--active');
-  });
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+  if (!clicked) return;
+  //Remove active classes
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  tabsContent.forEach(tabContent =>
+    tabContent.classList.remove('operations__content--active')
+  );
+  clicked.classList.add('operations__tab--active');
 
   document
-    .querySelector(`.operations__content--${btnNum}`)
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
 
-///////////////////////////////////////
-// Menu fade animation
-const handleHover = function (e) {
+//Fade menu elements
+const nav = document.querySelector('.nav');
+
+const handleMenuHover = function (e) {
   if (e.target.classList.contains('nav__link')) {
     const link = e.target;
     const siblings = link.closest('.nav').querySelectorAll('.nav__link');
     const logo = link.closest('.nav').querySelector('img');
-
-    siblings.forEach(el => {
-      if (el !== link) el.style.opacity = this;
+    siblings.forEach(sibling => {
+      if (sibling !== link) {
+        sibling.style.opacity = this;
+      }
     });
     logo.style.opacity = this;
   }
 };
-// Passing "argument" into handler
-nav.addEventListener('mouseover', handleHover.bind(0.5));
-nav.addEventListener('mouseout', handleHover.bind(1));
+nav.addEventListener('mouseover', handleMenuHover.bind(0.5));
 
-///////////////////////////////////////
-// Sticky navigation: Intersection Observer API
+nav.addEventListener('mouseout', handleMenuHover.bind(1));
+
+//Sticky navigation
+const headerSection = document.querySelector('.header');
 const navHeight = nav.getBoundingClientRect().height;
-
 const stickyNav = function (entries) {
   const [entry] = entries;
 
-  if (!entry.isIntersecting) nav.classList.add('sticky');
-  else nav.classList.remove('sticky');
+  if (!entry.isIntersecting) {
+    nav.classList.add('sticky');
+    if (hiddenMenu.classList.contains('active')) {
+      hiddenMenu.classList.remove('active');
+      hiddenMenu.classList.add('active-sticky');
+    }
+  } else {
+    nav.classList.remove('sticky');
+    hiddenMenu.classList.remove('active');
+    hiddenMenu.classList.remove('active-sticky');
+  }
 };
-
 const headerObserver = new IntersectionObserver(stickyNav, {
   root: null,
   threshold: 0,
   rootMargin: `-${navHeight}px`,
 });
 
-headerObserver.observe(header);
+headerObserver.observe(headerSection);
 
-///////////////////////////////////////
-// Reveal section on scroll
+//Reveal sections
 const allSections = document.querySelectorAll('.section');
-
 const revealSection = function (entries, observer) {
   const [entry] = entries;
-
   if (!entry.isIntersecting) return;
-
   entry.target.classList.remove('section--hidden');
   observer.unobserve(entry.target);
 };
 
-const sectionObserver = new IntersectionObserver(revealSection, {
+const sectionOberver = new IntersectionObserver(revealSection, {
   root: null,
   threshold: 0.15,
 });
 
 allSections.forEach(function (section) {
-  sectionObserver.observe(section);
+  sectionOberver.observe(section);
   section.classList.add('section--hidden');
 });
 
-///////////////////////////////////////
-// Lazy loading images
-const allImages = document.querySelectorAll('img[data-src]');
+//Lazy load images
+const targetImages = document.querySelectorAll('img[data-src]');
 
-const loadObserver = (entries, observer) => {
+const loadImg = function (entries, observer) {
   const [entry] = entries;
-
   if (!entry.isIntersecting) return;
-
+  //replace src with data-src
   entry.target.src = entry.target.dataset.src;
-
   entry.target.addEventListener('load', function () {
     entry.target.classList.remove('lazy-img');
   });
-
   observer.unobserve(entry.target);
 };
-
-const imgLoadingObserver = new IntersectionObserver(loadObserver, {
+const imgObserver = new IntersectionObserver(loadImg, {
   root: null,
   threshold: 0,
-  rootMargin: '200px',
+  rootMargin: '-100px',
 });
 
-allImages.forEach(img => imgLoadingObserver.observe(img));
+targetImages.forEach(img => imgObserver.observe(img));
 
-///////////////////////////////////////
-// Slider
+//Slider
 const slider = function () {
+  let currentSlide = 0;
   const slides = document.querySelectorAll('.slide');
+  const maxSlide = slides.length;
   const btnLeft = document.querySelector('.slider__btn--left');
   const btnRight = document.querySelector('.slider__btn--right');
   const dotContainer = document.querySelector('.dots');
 
-  let curSlide = 0;
-  const maxSlide = slides.length;
-
-  // Functions
   const createDots = function () {
     slides.forEach(function (_, i) {
       dotContainer.insertAdjacentHTML(
@@ -245,11 +178,10 @@ const slider = function () {
     });
   };
 
-  const activateDot = function (slide) {
+  const activeDot = function (slide) {
     document
       .querySelectorAll('.dots__dot')
       .forEach(dot => dot.classList.remove('dots__dot--active'));
-
     document
       .querySelector(`.dots__dot[data-slide="${slide}"]`)
       .classList.add('dots__dot--active');
@@ -257,55 +189,64 @@ const slider = function () {
 
   const goToSlide = function (slide) {
     slides.forEach(
-      (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
+      (s, index) =>
+        (s.style.transform = `translateX(${100 * (index - slide)}%)`)
     );
   };
 
-  // Next slide
   const nextSlide = function () {
-    if (curSlide === maxSlide - 1) {
-      curSlide = 0;
-    } else {
-      curSlide++;
-    }
+    if (currentSlide === maxSlide - 1) {
+      currentSlide = 0;
+    } else currentSlide++;
 
-    goToSlide(curSlide);
-    activateDot(curSlide);
+    goToSlide(currentSlide);
+    activeDot(currentSlide);
   };
 
   const prevSlide = function () {
-    if (curSlide === 0) {
-      curSlide = maxSlide - 1;
+    if (currentSlide === 0) {
+      currentSlide = maxSlide - 1;
     } else {
-      curSlide--;
+      currentSlide--;
     }
-    goToSlide(curSlide);
-    activateDot(curSlide);
+    goToSlide(currentSlide);
+    activeDot(currentSlide);
   };
 
   const init = function () {
     goToSlide(0);
     createDots();
-
-    activateDot(0);
+    activeDot(0);
   };
   init();
-
-  // Event handlers
   btnRight.addEventListener('click', nextSlide);
   btnLeft.addEventListener('click', prevSlide);
 
   document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') nextSlide();
     if (e.key === 'ArrowLeft') prevSlide();
-    e.key === 'ArrowRight' && nextSlide();
   });
 
   dotContainer.addEventListener('click', function (e) {
     if (e.target.classList.contains('dots__dot')) {
       const { slide } = e.target.dataset;
       goToSlide(slide);
-      activateDot(slide);
+      activeDot(slide);
     }
   });
 };
+
 slider();
+
+//toggle hamburger
+
+const hamMenu = document.querySelector('.hamburger');
+const hiddenMenu = document.querySelector('.nav__links');
+
+hamMenu.addEventListener('click', function () {
+  if (document.querySelector('.nav').classList.contains('sticky')) {
+    hiddenMenu.classList.toggle('active-sticky');
+  } else {
+    hiddenMenu.classList.toggle('active');
+  }
+});
