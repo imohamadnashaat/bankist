@@ -1,19 +1,17 @@
 'use strict';
 
+const header = document.querySelector('.header');
+const nav = document.querySelector('.nav');
+const h1 = document.querySelector('h1');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
-const header = document.querySelector('.header');
-const nav = document.querySelector('.nav');
-const h1 = document.querySelector('h1');
 const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
 const tabContainer = document.querySelector('.operations__tab-container');
-const contents = document.querySelectorAll('.operations__content');
+const tabsContent = document.querySelectorAll('.operations__content');
 
 ///////////////////////////////////////
 // Modal window
@@ -81,15 +79,6 @@ btnScrollTo.addEventListener('click', () => {
 
 ///////////////////////////////////////
 // Page navigation
-// document.querySelectorAll('.nav__link').forEach(function (el) {
-//   el.addEventListener('click', function (e) {
-//     e.preventDefault();
-//     const id = this.getAttribute('href');
-//     console.log(id);
-//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-//   });
-// });
-
 // 1. Add event listener to common parent element
 // 2. Determine what element originated the event
 document.querySelector('.nav__links').addEventListener('click', function (e) {
@@ -104,16 +93,17 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 ///////////////////////////////////////
 // Welcome alert
+/*
 const welcomeAlert = () => {
   alert('Welcome to our website :D');
 };
-
 // Add welcome event
 h1.addEventListener('mouseenter', welcomeAlert);
 // Remove welcome event
 setTimeout(() => {
   h1.removeEventListener('mouseenter', welcomeAlert);
 }, 100);
+*/
 
 ///////////////////////////////////////
 // Tabbed component
@@ -139,7 +129,7 @@ tabContainer.addEventListener('click', function (e) {
   }
 
   // Remvoe active content
-  contents.forEach(content => {
+  tabsContent.forEach(content => {
     content.classList.remove('operations__content--active');
   });
 
@@ -162,7 +152,6 @@ const handleHover = function (e) {
     logo.style.opacity = this;
   }
 };
-
 // Passing "argument" into handler
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 nav.addEventListener('mouseout', handleHover.bind(1));
@@ -320,63 +309,3 @@ const slider = function () {
   });
 };
 slider();
-
-///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
-
-// Event Propagation in Practice
-/*
-const randomInt = (min, max) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
-const randomColor = () =>
-  `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
-
-document.querySelector('.nav__link').addEventListener('click', function (e) {
-  e.preventDefault();
-  this.style.backgroundColor = randomColor();
-  // console.log('LINK', e.target, e.currentTarget);
-  // console.log(e.currentTarget === this);
-
-  // Stop propagation
-  // e.stopPropagation();
-});
-
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  // console.log('CONTAINER', e.target, e.currentTarget);
-});
-
-document.querySelector('.nav').addEventListener('click', function (e) {
-  this.style.backgroundColor = randomColor();
-  // console.log('NAV', e.target, e.currentTarget);
-});
-*/
-
-// DOM traversing
-/*
-const h1El = document.querySelector('h1');
-
-const highlight = h1El.querySelectorAll('.highlight');
-
-// console.log(h1El.childNodes);
-// console.log(h1El.children);
-
-h1El.firstElementChild.style.color = 'white';
-h1El.lastElementChild.style.color = 'gray';
-
-// console.log(h1El.parentNode);
-// console.log(h1El.parentElement);
-
-h1El.closest('.header').style.background = 'var(--color-tertiary)';
-h1El.closest('h1').style.background = 'white';
-
-console.log(h1El.previousElementSibling);
-console.log(h1El.nextElementSibling);
-
-console.log(h1El.parentElement.children);
-
-[...h1El.parentElement.children].forEach(
-  el => (el.style.transform = 'scale(0.8)')
-);
-*/
